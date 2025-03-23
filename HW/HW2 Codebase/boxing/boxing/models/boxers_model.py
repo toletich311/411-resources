@@ -120,7 +120,7 @@ def get_leaderboard(sort_by: str = "wins") -> List[dict[str, Any]]:
         sort_by (str): Field to sort by. Valid options are 'wins' or 'win_pct'.
 
     Returns:
-        List[dict[str, Any]]: A list of boxers with stats.
+        List[dict[str, Any]]: A list of boxers with stats representing leaderboard.
 
     Raises:
         ValueError: If an invalid sort_by parameter is provided.
