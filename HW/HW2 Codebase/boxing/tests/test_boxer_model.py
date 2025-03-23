@@ -14,4 +14,36 @@ from boxing.models.boxers_model import (
     Boxer
 )
 
+# ------------------
+# FIXTURES
+# ------------------
+
+def mock_cursor(mocker):
+    mock_conn = mocker.Mock()
+    mock_cursor = mocker.Mock()
+
+    # Mock the connection's cursor
+    mock_conn.cursor.return_value = mock_cursor
+    mock_cursor.fetchone.return_value = None  # Default return for queries
+    mock_cursor.fetchall.return_value = []
+    mock_cursor.commit.return_value = None
+
+    # Mock the get_db_connection context manager from sql_utils
+    @contextmanager
+    def mock_get_db_connection():
+        yield mock_conn  # Yield the mocked connection object
+
+    mocker.patch("boxing.models.boxers_model.get_db_connection", mock_get_db_connection)
+
+    return mock_cursor  # Return the mock cursor so we can set expectations per test
+
+
+#first test test 
+def test_get_weight_class_featherweight():
+    assert get_weight_class(125) == "FEATHERWEIGHT"
+
+def test_get_weight_class_invalid():
+    with pytest.raises(ValueError, match="Invalid weight: 100."):
+        get_weight_class(100)
+
 
