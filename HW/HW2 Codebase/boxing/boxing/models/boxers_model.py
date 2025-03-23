@@ -14,7 +14,7 @@ configure_logger(logger)
 @dataclass
 class Boxer:
     """
-    Data class representing a boxer.
+    Data class representing a boxer and their attributes. Contains an init function to assign weightclass.
 
     Attributes:
         id (int): Unique identifier for the boxer.
@@ -40,7 +40,7 @@ class Boxer:
 
 def create_boxer(name: str, weight: int, height: int, reach: float, age: int) -> None:
     """
-    Creates a new boxer and inserts them into the database.
+    Creates a new boxer object to insert them into the database, uses boxer class defined previously. 
 
     Args:
         name (str): Name of the boxer.
@@ -88,7 +88,7 @@ def create_boxer(name: str, weight: int, height: int, reach: float, age: int) ->
 
 def delete_boxer(boxer_id: int) -> None:
     """
-    Deletes a boxer from the database by their ID.
+    Deletes a boxer from the database by their ID by using SQL queries to parse database. 
 
     Args:
         boxer_id (int): ID of the boxer to delete.
@@ -114,7 +114,7 @@ def delete_boxer(boxer_id: int) -> None:
 
 def get_leaderboard(sort_by: str = "wins") -> List[dict[str, Any]]:
     """
-    Retrieves a leaderboard of boxers sorted by the given metric.
+    Retrieves a leaderboard of boxers sorted by the given metric. Leaderboard is represented by a Python dictionary.
 
     Args:
         sort_by (str): Field to sort by. Valid options are 'wins' or 'win_pct'.
@@ -170,7 +170,8 @@ def get_leaderboard(sort_by: str = "wins") -> List[dict[str, Any]]:
 
 def get_boxer_by_id(boxer_id: int) -> Boxer:
     """
-    Retrieves a boxer by their ID.
+    Retrieves a boxer by their ID. This function returns a specific instance of the Boxer object. 
+    This function uses SQL queries to find boxer in database given id. 
 
     Args:
         boxer_id (int): The ID of the boxer.
@@ -207,7 +208,8 @@ def get_boxer_by_id(boxer_id: int) -> Boxer:
 
 def get_boxer_by_name(boxer_name: str) -> Boxer:
     """
-    Retrieves a boxer by their name.
+    Retrieves a boxer by their name. This function returns a specific instance of the boxer object. 
+    This function uses SQL queries to find boxer in database given name. 
 
     Args:
         boxer_name (str): The name of the boxer.
@@ -271,7 +273,7 @@ def get_weight_class(weight: int) -> str:
 
 def update_boxer_stats(boxer_id: int, result: str) -> None:
     """
-    Updates a boxer's stats in the database after a match.
+    Updates a boxer's stats in the database after a match with SQL to update database.
 
     Args:
         boxer_id (int): ID of the boxer.
