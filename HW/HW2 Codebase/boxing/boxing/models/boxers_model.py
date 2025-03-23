@@ -14,7 +14,7 @@ configure_logger(logger)
 @dataclass
 class Boxer:
     """
-    Data class representing a boxer and their attributes. Contains an init function to assign weightclass.
+    Data class representing a boxer and their attributes.
 
     Attributes:
         id (int): Unique identifier for the boxer.
