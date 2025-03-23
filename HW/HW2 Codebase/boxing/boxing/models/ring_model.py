@@ -13,9 +13,29 @@ configure_logger(logger)
 
 class RingModel:
     def __init__(self):
+
+        """Initializes an empty ring with no boxers as a list.
+        
+        Attributes: """
+
         self.ring: List[Boxer] = []
 
     def fight(self) -> str:
+
+        """Simulates a fight between the boxers. Starts by checking whether there are
+        at least two boxers within the ring. If there are less than we throw an error. 
+        Then we take two boxers and calculate their fighting skills and compare the difference
+        and update the stats. 
+
+        Args: 
+            an instance of the ringModel class.
+
+        Returns: 
+            winner.name: the name of the winning boxer.
+
+        """
+
+
         if len(self.ring) < 2:
             raise ValueError("There must be two boxers to start a fight.")
 
@@ -46,11 +66,33 @@ class RingModel:
         return winner.name
 
     def clear_ring(self):
+
+        """Clears the ring by removing all the boxers from the ring. 
+        Empties the current list of boxers. 
+        
+        returns: 
+            Nothing. But modifies the list of boxers by emptying it. 
+        
+        """
+
         if not self.ring:
             return
         self.ring.clear()
 
     def enter_ring(self, boxer: Boxer):
+
+        """Adds a boxer to the ring if it is an instance of the Boxer class 
+        and if there is room within the ring for another Boxer. Throws errors
+        if the ring is full or if the boxer is not an instance of the Boxer class.
+
+        Args:
+           A boxer instance
+        
+        Returns:
+            Nothing. But modifies the list of boxers by adding a boxer to it.
+        
+        """
+        
         if not isinstance(boxer, Boxer):
             raise TypeError(f"Invalid type: Expected 'Boxer', got '{type(boxer).__name__}'")
 
@@ -60,6 +102,14 @@ class RingModel:
         self.ring.append(boxer)
 
     def get_boxers(self) -> List[Boxer]:
+
+        """ returns the current list of boxers. 
+
+        Returns:
+            The current list of Boxers within the ring. 
+        
+        """
+
         if not self.ring:
             pass
         else:
@@ -68,7 +118,16 @@ class RingModel:
         return self.ring
 
     def get_fighting_skill(self, boxer: Boxer) -> float:
-        # Arbitrary calculations
+        """Arbrituarily calculates the fighting skill of each boxer based 
+        on a custon formula using the boxers weight, name, length, reach, and age.
+
+        Args:
+            an instance of the Boxer class 
+
+        Returns:
+            a float value representing the skill level of the boxer. 
+        """
+        
         age_modifier = -1 if boxer.age < 25 else (-2 if boxer.age > 35 else 0)
         skill = (boxer.weight * len(boxer.name)) + (boxer.reach / 10) + age_modifier
 
