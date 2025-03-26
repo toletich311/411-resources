@@ -94,6 +94,29 @@ def test_delete_nonexistent_boxer( mocker):
     with pytest.raises(ValueError):
         delete_boxer(99)
 
+#testing get_leaderbaord functionality 
+def test_get_leaderboard_valid(mocker):
+    """Tests leaderboard retrieval and proper calculation of win percentage."""
+    logger.info("Testing get_leaderboard with valid data")
+    cursor = mock_cursor(mocker)
+    cursor.fetchall.return_value = [
+        (1, "Ali", 150, 70, 72.5, 30, 5, 4, 0.8)
+    ]
+    board = get_leaderboard()
+    assert board[0]["name"] == "Ali"
+    logger.info("Testing get_leaderboard win percentage calculation")
+
+    assert board[0]["win_pct"] == 80.0
+
+def test_get_leaderboard_invalid_sort():
+    """Tests that invalid sort_by parameter raises a ValueError."""
+    logger.info("Testing get_leaderboard with invalid sort key")
+    with pytest.raises(ValueError):
+        get_leaderboard(sort_by="invalid") #if not win_pct or wins --> invalid
+
+
+
+
 
 
 
