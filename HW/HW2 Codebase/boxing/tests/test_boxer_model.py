@@ -167,6 +167,30 @@ def test_get_weight_class_invalid():
 
 #testing update_boxer_stats
 
+def test_update_boxer_stats_win(mocker):
+    """Tests updating stats after a win for an existing boxer."""
+    logger.info("Testing update_boxer_stats with win result")
+    cursor = mock_cursor(mocker)
+    cursor.fetchone.return_value = (1,)
+    update_boxer_stats(1, "win")
+    assert "wins = wins + 1" in cursor.execute.call_args_list[1][0][0]
+
+def test_update_boxer_stats_loss(mocker):
+    """Tests updating stats after a loss for an existing boxer."""
+    logger.info("Testing update_boxer_stats with loss result")
+    cursor = mock_cursor(mocker)
+    cursor.fetchone.return_value = (1,)
+    update_boxer_stats(1, "loss")
+    assert "fights = fights + 1 WHERE id = ?" in cursor.execute.call_args_list[1][0][0]
+
+def test_update_boxer_stats_invalid():
+    """Tests updating stats with invalid result raises ValueError"""
+    logger.info("Testing update_boxer_stats with invlaid input")
+    with pytest.raises(ValueError):
+        update_boxer_stats(1, "tie")
+
+
+
     
 
 
