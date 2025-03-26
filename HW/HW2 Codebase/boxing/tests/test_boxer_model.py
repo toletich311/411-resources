@@ -132,6 +132,17 @@ def test_get_boxer_by_id_not_exists(mocker):
     with pytest.raises(ValueError):
         get_boxer_by_id(2)  #no boxer with id 2
 
+#testing get_boxer_by_name functionality
+def test_get_boxer_by_name_exists(mocker):
+    """"Tests that retrieving a boxer by name that exitst in fact rereturns specified boxer"""
+    logger.info("Testing get_boxer_by_name_exists when boxer name is found")
+    cursor = mock_cursor(mocker)
+    cursor.fetchone.return_value = (1, "Ali", 150, 70, 72.5, 30)
+    boxer = get_boxer_by_name("Ali")
+    assert isinstance(boxer, Boxer)
+    assert boxer.name == "Ali"
+
+
 
 
 
