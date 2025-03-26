@@ -46,7 +46,7 @@ def test_get_random_timeout(mocker):
     mocker.patch("requests.get", side_effect=requests.exceptions.Timeout)
 
     with pytest.raises(RuntimeError, match="Request to random.org timed out."):
-        get_random(10)
+        get_random()
 
 def test_get_random_invalid_response(mock_random_org):
     """Test handling of an invalid response from random.org.
