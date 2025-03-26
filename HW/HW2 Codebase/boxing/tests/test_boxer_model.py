@@ -166,7 +166,6 @@ def test_get_weight_class_invalid():
         get_weight_class(100)
 
 #testing update_boxer_stats
-
 def test_update_boxer_stats_win(mocker):
     """Tests updating stats after a win for an existing boxer."""
     logger.info("Testing update_boxer_stats with win result")
