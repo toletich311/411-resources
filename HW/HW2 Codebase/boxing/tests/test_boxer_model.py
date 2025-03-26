@@ -43,18 +43,6 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-#Tests to check the weight class constuctor in Boxer class works
-def test_get_weight_class_featherweight():
-    "Tests that a valid featherweight gets assigned to the correct weight class"
-    logger.info("Testing get_weight_class with featherweight")
-    assert get_weight_class(125) == "FEATHERWEIGHT"
-
-def test_get_weight_class_invalid():
-    "Tests that an invalid weight input throws an error"
-    logger.info("Testing get_weight_class with invalid weight")
-    with pytest.raises(ValueError, match="Invalid weight: 100."):
-        get_weight_class(100)
-
 #Tests to check the create_boxer functionality
 def test_create_boxer_valid(mocker):
     "tests that creating a boxer with valid input in facts creates a boxer"
@@ -151,7 +139,34 @@ def test_get_boxer_by_name_not_exists(mocker):
         get_boxer_by_name("Bruce")  #there is no boxer named bruce 
 
 #testing get_weight_class
+def test_get_weight_class_featherweight():
+    "Tests that a valid featherweight gets assigned to the correct weight class"
+    logger.info("Testing get_weight_class with featherweight")
+    assert get_weight_class(125) == "FEATHERWEIGHT"
+
+def test_get_weight_class_lightweight():
+    "Tests that a valid lightweight gets assigned to the correct weight class"
+    logger.info("Testing get_weight_class with lightweight")
+    assert get_weight_class(135) == "LIGHTWEIGHT"
+
+def test_get_weight_class_middleweight():
+    "Tests that a valid middleweight gets assigned to the correct weight class"
+    logger.info("Testing get_weight_class with middleweight")
+    assert get_weight_class(182) == "MIDDLEWEIGHT"
+
+def test_get_weight_class_heavyweight():
+    "Tests that a valid heavyweight gets assigned to the correct weight class"
+    logger.info("Testing get_weight_class with heavyweight")
+    assert get_weight_class(225) == "HEAVYWEIGHT"
+
+def test_get_weight_class_invalid():
+    "Tests that an invalid weight input throws an error"
+    logger.info("Testing get_weight_class with invalid weight")
+    with pytest.raises(ValueError, match="Invalid weight: 100."):
+        get_weight_class(100)
+
 #testing update_boxer_stats
+
     
 
 
