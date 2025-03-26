@@ -43,7 +43,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-#Tests to check the weight class constuctor in Boxer class
+#Tests to check the weight class constuctor in Boxer class works
 def test_get_weight_class_featherweight():
     "Tests that a valid featherweight gets assigned to the correct weight class"
     logger.info("Testing get_weight_class with featherweight")
@@ -76,6 +76,23 @@ def test_create_boxer_duplicate(mocker):
     cursor.fetchone.return_value = (1,)
     with pytest.raises(ValueError):
         create_boxer("Ali", 150, 70, 72.5, 30)
+
+#Tests to check delete_boxer functionality
+def test_delete_existing_boxer(mocker):
+    """Tests if an existing boxer can be deleted successfully."""
+    logger.info("Testing delete_boxer for existing boxer")
+    cursor = mock_cursor(mocker)
+    cursor.fetchone.return_value = (1,)
+    delete_boxer(1)
+    assert cursor.execute.call_count == 2
+
+def test_delete_nonexistent_boxer( mocker):
+    """Tests that trying to delete a non-existent boxer throws a ValueError."""
+    logger.info("Testing delete_boxer for non-existent boxer")
+    cursor = mock_cursor(mocker)
+    cursor.fetchone.return_value = None
+    with pytest.raises(ValueError):
+        delete_boxer(99)
 
 
 
