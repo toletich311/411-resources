@@ -37,13 +37,25 @@ def mock_cursor(mocker):
 
     return mock_cursor  # Return the mock cursor so we can set expectations per test
 
-
-#first test test 
+#Tests to check the weight class constuctor in Boxer class
 def test_get_weight_class_featherweight():
     assert get_weight_class(125) == "FEATHERWEIGHT"
 
 def test_get_weight_class_invalid():
     with pytest.raises(ValueError, match="Invalid weight: 100."):
         get_weight_class(100)
+
+#Tests to check the create_boxer functionality
+def test_create_boxer_valid(mocker):
+    cursor = mock_cursor(mocker)
+    create_boxer("Ali", 150, 70, 72.5, 30)
+    assert cursor.execute.call_count == 2
+
+def test_create_boxer_invalid_age():
+    with pytest.raises(ValueError):
+        create_boxer("Ali", 150, 70, 72.5, 10)
+
+
+
 
 
