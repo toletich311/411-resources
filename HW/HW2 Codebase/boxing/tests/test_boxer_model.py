@@ -114,6 +114,24 @@ def test_get_leaderboard_invalid_sort():
     with pytest.raises(ValueError):
         get_leaderboard(sort_by="invalid") #if not win_pct or wins --> invalid
 
+#testing get_boxer_by_id functionality 
+def test_get_boxer_by_id_exists(mocker):
+    """Tests retrieving a boxer by ID when the boxer exists."""
+    logger.info("Testing get_boxer_by_id when boxer exists")
+    cursor = mock_cursor(mocker)
+    cursor.fetchone.return_value = (1, "Ali", 150, 70, 72.5, 30)
+    boxer = get_boxer_by_id(1) #ali's id is 1
+    assert isinstance(boxer, Boxer)
+    assert boxer.name == "Ali"
+
+def test_get_boxer_by_id_not_exists(mocker):
+    """Tests that retrieving a boxer by ID that doesn't exist raises ValueError."""
+    logger.info("Testing get_boxer_by_id when boxer does not exist")
+    cursor = mock_cursor(mocker)
+    cursor.fetchone.return_value = None
+    with pytest.raises(ValueError):
+        get_boxer_by_id(2)  #no boxer with id 2
+
 
 
 
