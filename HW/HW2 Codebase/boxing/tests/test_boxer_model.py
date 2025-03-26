@@ -1,4 +1,5 @@
 import sqlite3
+import logging
 import pytest
 import re
 from contextlib import contextmanager
@@ -37,21 +38,30 @@ def mock_cursor(mocker):
 
     return mock_cursor  # Return the mock cursor so we can set expectations per test
 
+# Configure test logger
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
 #Tests to check the weight class constuctor in Boxer class
 def test_get_weight_class_featherweight():
+    logger.info("Testing get_weight_class with featherweight")
     assert get_weight_class(125) == "FEATHERWEIGHT"
 
 def test_get_weight_class_invalid():
+    logger.info("Testing get_weight_class with invalid weight")
     with pytest.raises(ValueError, match="Invalid weight: 100."):
         get_weight_class(100)
 
 #Tests to check the create_boxer functionality
 def test_create_boxer_valid(mocker):
+    logger.info("Testing create_boxer with valid input")
     cursor = mock_cursor(mocker)
     create_boxer("Ali", 150, 70, 72.5, 30)
     assert cursor.execute.call_count == 2
 
 def test_create_boxer_invalid_age():
+    logger.info("Testing create_boxer with invalid age")
     with pytest.raises(ValueError):
         create_boxer("Ali", 150, 70, 72.5, 10)
 
