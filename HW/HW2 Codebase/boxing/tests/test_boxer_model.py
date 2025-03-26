@@ -65,6 +65,13 @@ def test_create_boxer_invalid_age():
     with pytest.raises(ValueError):
         create_boxer("Ali", 150, 70, 72.5, 10)
 
+def test_create_boxer_duplicate(mocker):
+    logger.info("Testing create_boxer with duplicate name")
+    cursor = mock_cursor(mocker)
+    cursor.fetchone.return_value = (1,)
+    with pytest.raises(ValueError):
+        create_boxer("Ali", 150, 70, 72.5, 30)
+
 
 
 
