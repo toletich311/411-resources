@@ -149,6 +149,9 @@ def test_get_boxer_by_name_not_exists(mocker):
     cursor.fetchone.return_value = None
     with pytest.raises(ValueError):
         get_boxer_by_name("Bruce")  #there is no boxer named bruce 
+
+#testing get_weight_class
+#testing update_boxer_stats
     
 
 
