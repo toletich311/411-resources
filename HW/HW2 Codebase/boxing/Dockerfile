@@ -28,7 +28,13 @@ RUN chmod +x /app/sql/create_db.sh
 VOLUME ["/app/db"]
 
 # Make port 5000 available to the world outside this container
-EXPOSE 5000
+EXPOSE 5003
 
 # Run the entrypoint script when the container launches
 CMD ["/app/entrypoint.sh"]
+
+#testing snippet 
+COPY ./entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+ENTRYPOINT ["/app/entrypoint.sh"]
