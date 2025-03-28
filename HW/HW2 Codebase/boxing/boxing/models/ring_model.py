@@ -16,7 +16,12 @@ class RingModel:
 
         """Initializes an empty ring with no boxers as a list.
         
-        Attributes: """
+        Attributes: 
+
+            ring (list): A list that is currently storing all the boxers within
+            the ring. 
+         
+        """
 
         self.ring: List[Boxer] = []
 
