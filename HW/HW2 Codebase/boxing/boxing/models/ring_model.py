@@ -18,7 +18,7 @@ class RingModel:
         
         Attributes: 
 
-            ring (list): A list that is currently storing all the boxers within
+            ring (list[Boxer]): A list that is currently storing all the boxers within
             the ring. 
          
         """
