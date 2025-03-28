@@ -46,7 +46,14 @@ check_db() {
   fi
 }
 
-#smoketest test
+check_health
+check_db
+
+###############################################
+#
+# Boxer tests
+#
+###############################################
 
 create_boxer() {
   name=$1
