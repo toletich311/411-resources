@@ -1,4 +1,14 @@
 #!/bin/bash
+#!/bin/bash
+
+docker build -t boxing-app .
+
+docker run -d \
+  --name boxing-container \
+  -p 5001:5000 \
+  --env-file .env \
+  -v $(pwd)/db:/app/db \
+  boxing-app
 
 # Variables
 IMAGE_NAME=
