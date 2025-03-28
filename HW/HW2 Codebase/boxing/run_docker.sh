@@ -61,4 +61,6 @@ docker run -d \
   -v "${DB_VOLUME_PATH}:/app/db" \
   "${IMAGE_NAME}:${CONTAINER_TAG}"
 
+#changed
+
 echo "Docker container is running on port ${HOST_PORT}."
