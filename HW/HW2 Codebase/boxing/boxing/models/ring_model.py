@@ -139,4 +139,7 @@ class RingModel:
             a float value representing the skill level of the boxer. 
         """
         
-        age_modifier = -1 if boxer.age < 25 else (-2 if 
+        age_modifier = -1 if boxer.age < 25 else (-2 if boxer.age > 35 else 0)
+        skill = (boxer.weight * len(boxer.name)) + (boxer.reach / 10) + age_modifier
+
+        return skill

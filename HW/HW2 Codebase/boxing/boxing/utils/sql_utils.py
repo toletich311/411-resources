@@ -57,4 +57,43 @@ def check_table_exists(tablename: str):
         cursor = conn.cursor()
 
         # Use parameterized query to avoid SQL injection
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?;", (tablen
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?;", (tablename,))
+        result = cursor.fetchone()
+
+        conn.close()
+
+        if result is None:
+            error_message = f"Table '{tablename}' does not exist."
+            logger.error(error_message)
+            raise Exception(error_message)
+        
+        logger.info(f"Table '{tablename}' exists.")
+
+    except sqlite3.Error as e:
+        error_message = f"Table check error for '{tablename}': {e}"
+        logger.error(error_message)
+        raise Exception(error_message) from e
+
+@contextmanager
+def get_db_connection():
+    """Context manager for SQLite database connection.
+
+    Yields:
+        sqlite3.Connection: The SQLite connection object.
+
+    Raises:
+        sqlite3.Error: If there is an issue connecting to the database.
+
+    """
+    conn = None
+    try:
+        logger.info(f"Opening database connection to {DB_PATH}...")
+        conn = sqlite3.connect(DB_PATH)
+        yield conn
+    except sqlite3.Error as e:
+        logger.error(f"Database connection error: {e}")
+        raise e
+    finally:
+        if conn:
+            conn.close()
+            logger.info("Database connection closed.")
