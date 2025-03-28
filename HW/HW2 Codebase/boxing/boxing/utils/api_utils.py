@@ -26,7 +26,7 @@ def get_random() -> float:
     
     
     try:
-        logger.info(f"Fetching random number from {url}")
+        logger.info(f"Fetching random number from {RANDOM_ORG_URL}")
         response = requests.get(RANDOM_ORG_URL, timeout=5)
 
         # Check if the request was successful
