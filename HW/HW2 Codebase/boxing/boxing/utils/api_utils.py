@@ -43,10 +43,4 @@ def get_random() -> float:
         logger.info(f"Received random number: {random_number}")
         return random_number
 
-    except requests.exceptions.Timeout:
-        logger.error("Request to random.org timed out.")
-        raise RuntimeError("Request to random.org timed out.")
-
-    except requests.exceptions.RequestException as e:
-        logger.error(f"Request to random.org failed: {e}")
-        raise RuntimeError(f"Request to random.org failed: {e}")
+    exce
