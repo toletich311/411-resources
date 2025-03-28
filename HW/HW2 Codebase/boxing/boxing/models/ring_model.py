@@ -31,7 +31,10 @@ class RingModel:
             an instance of the ringModel class.
 
         Returns: 
-            winner.name: the name of the winning boxer.
+            winner.name: the str name of the winning boxer.
+
+        Raises:
+        ValueError: If there are less than two boxers in the ring.
 
         """
 
@@ -91,6 +94,9 @@ class RingModel:
         Returns:
             Nothing. But modifies the list of boxers by adding a boxer to it.
         
+        Raises:
+            TypeError: If the input is not a Boxer instance.
+            ValueError: If there are already two boxers in the ring. 
         """
         
         if not isinstance(boxer, Boxer):
