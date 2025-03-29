@@ -45,14 +45,14 @@ def test_enter_ring_adds_second_boxer(ring_model, sample_boxer_1, sample_boxer_2
     assert ring_model.ring[1].name == "Tyson"
 
 def test_enter_ring_not_boxer(ring_model):
-    with pytest.raises(TypeError, match="Invalid input, Expected 'Boxer'"):
+    with pytest.raises(TypeError, match="Invalid type: Expected 'Boxer'"):
         ring_model.enter_ring("not_a_boxer")
 
 def test_enter_ring_raises_error_when_full(ring_model, sample_boxer_1, sample_boxer_2):
     """Test that a ValueError is raised when trying to add more than 2 boxers."""
     ring_model.enter_ring(sample_boxer_1)
     ring_model.enter_ring(sample_boxer_2)
-    with pytest.raises(ValueError, match="The ring is at max capacity."):
+    with pytest.raises(ValueError, match="Ring is full, cannot add more boxers."):
         ring_model.enter_ring(sample_boxer_1)
 
 
@@ -60,38 +60,52 @@ def test_enter_ring_raises_error_when_full(ring_model, sample_boxer_1, sample_bo
 # TESTS FOR FIGHTING IN THE RING
 # ------------------
 
-def test_fight_return_winner():
-    pass
+def test_fight_return_winner(ring_model, sample_boxer_1, sample_boxer_2):
+    ring_model.enter_ring(sample_boxer_1)
+    ring_model.enter_ring(sample_boxer_2)
+    winner = ring_model.fight()
+    assert winner in [sample_boxer_1, sample_boxer_2]
 
-def test_not_enough_boxers_raises_error():
-    pass
+def test_not_enough_boxers_raises_error(ring_model, sample_boxer_1):
+    ring_model.enter_ring(sample_boxer_1)
+    with pytest.raises(ValueError, match="There must be two boxers to start a fight."):
+        ring_model.fight()
 
 # ------------------
 # TESTS FOR CLEARING THE RING  
 # ------------------
 
-def test_clear_ring(ring_model):
-    pass 
+def test_clear_ring(ring_model, sample_boxer_1, sample_boxer_2):
+    ring_model.enter_ring(sample_boxer_1)
+    ring_model.enter_ring(sample_boxer_2)
+    ring_model.clear_ring()
+    assert ring_model.ring == []
 
-def test_clear_rings_after_fight():
-    pass
+def test_clear_rings_after_fight(ring_model , sample_boxer_1, sample_boxer_2):
+    ring_model.enter_ring(sample_boxer_1)
+    ring_model.enter_ring(sample_boxer_2)
+    ring_model.fight()
+    assert ring_model.get_boxers() == []
 
-def test_clear_ring_when_empty():
-    pass
+def test_clear_ring_when_empty(ring_model):
+    ring_model.clear_ring()
+    assert ring_model.get_boxers() == []
 
 # ------------------
 # TESTS FOR GETTING BOXERS 
 # ------------------
 
-def test_get_boxers():
-    pass
+def test_get_boxers(ring_model , sample_boxer_1, sample_boxer_2):
+    ring_model.enter_ring(sample_boxer_1)
+    ring_model.enter_ring(sample_boxer_2)
+    boxers = ring_model.get_boxers()
+    assert boxers == [sample_boxer_1, sample_boxer_2]
 
 # ------------------
 # TESTS FOR RETURNING STATS
 # ------------------
 
-def test_get_fighter_stats():
-    pass
+def test_get_fighter_skill(ring_model, sample_boxer_1):
+    skill = ring_model.get_fighting_skill(sample_boxer_1)
+    assert isinstance(skill, float)
 
-def test_get_fighter_stats_no_fighters():
-    pass
