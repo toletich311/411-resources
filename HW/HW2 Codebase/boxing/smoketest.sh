@@ -46,6 +46,7 @@ check_db() {
   fi
 }
 
+#call health checks
 check_health
 check_db
 
@@ -88,6 +89,18 @@ delete_boxer_by_id(){
   fi
 }
 
+clear_all_boxers() {
+  echo "Clearing all boxers..."
+  response=$(curl -s -X POST "$BASE_URL/clear-boxers")
+  if echo "$response" | grep -q '"status": "success"'; then
+    echo "PASS: All boxers cleared."
+  else
+    echo "FAIL: Failed to clear all boxers."
+    echo "$response"
+    exit 1
+  fi
+}
+
 get_boxer_by_id(){
    id=$1
   echo "Getting boxer with ID $id..."
@@ -103,13 +116,28 @@ get_boxer_by_id(){
   fi
 }
 
-
+get_boxer_by_name() {
+  name=$1
+  echo "Getting boxer with name $name..."
+  response=$(curl -s "$BASE_URL/get-boxer-by-name/$name")
+  if echo "$response" | grep -q '"status": "success"'; then
+    echo "PASS: Retrieved boxer '$name'"
+    if [ "$ECHO_JSON" = true ]; then
+      echo "$response" | jq .
+    fi
+  else
+    echo "FAIL: Failed to retrieve boxer '$name'"
+    echo "$response"
+    exit 1
+  fi
+}
 
 ###############################################
 #
 # Ringmodel Tests
 #
 ###############################################
+
 enter_ring() {
   name=$1
   echo "Adding $name to the ring..."
@@ -168,7 +196,13 @@ sleep 1
 create_boxer "Tyson" 220 70 71.0 28
 create_boxer "Holyfield" 210 74 78.0 32
 
-#test different fucntions
+#test retrieval fucntions
+get_boxer_by_name "Pacquiao"
+get_bxer_by_name "Tyson"
+get_bxer_by_name "Holyfield"
+get_boxer_by_id 1
+get_boxer_by_id 2
+get_boxer_by_id 3
 
 #add boxers to ring
 enter_ring "Tyson"
@@ -198,7 +232,10 @@ echo "$response" | jq .
 #delete boxers
 delete_boxer_by_id 1
 delete_boxer_by_id 2
-delete_boxer_by_id 3
+
+
+#clearing all remaining boxers (just boxer 3)
+clear_all_boxers
 
 echo "Smoketest completed."
 
