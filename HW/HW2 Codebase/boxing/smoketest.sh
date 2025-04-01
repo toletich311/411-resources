@@ -192,14 +192,26 @@ docker exec boxing-app_container /app/sql/create_db.sh
 
 #create valid boxers 
 create_boxer "Pacquiao" 190 72 73.0 29
-sleep 1
 create_boxer "Tyson" 220 70 71.0 28
 create_boxer "Holyfield" 210 74 78.0 32
 
+#try to create a duplicate boxer -- this test should fail
+# Try to create the same boxer again (should fail)
+echo "Trying to create boxer with duplicate name..."
+response=$(curl -s -X POST "$BASE_URL/add-boxer" -H "Content-Type: application/json" \
+  -d '{"name":"Holyfield", "weight":210, "height":74, "reach":78.0, "age":32}')
+if echo "$response" | grep -q '"status": "error"'; then
+  echo "PASS: Duplicate boxer name correctly rejected."
+else
+  echo "FAIL: Duplicate boxer name was not rejected."
+  echo "$response"
+  exit 1
+fi
+
 #test retrieval fucntions
 get_boxer_by_name "Pacquiao"
-get_bxer_by_name "Tyson"
-get_bxer_by_name "Holyfield"
+get_boxer_by_name "Tyson"
+get_boxer_by_name "Holyfield"
 get_boxer_by_id 1
 get_boxer_by_id 2
 get_boxer_by_id 3
@@ -222,8 +234,19 @@ start_fight
 enter_ring "Holyfield"
 enter_ring "Tyson"
 
-#start fight
-start_fight
+#add third boxer to the ring -- should fail 
+echo "Testing overfilling the ring..."
+# Now try to add a third
+response=$(curl -s -X POST "$BASE_URL/enter-ring" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Pacquiao"}')
+if echo "$response" | grep -q '"status": "error"'; then
+  echo "PASS: Third boxer not allowed in ring."
+else
+  echo "FAIL: Third boxer was allowed in the ring!"
+  echo "$response"
+  exit 1
+fi
 
 #get leaderboard 
 get_leaderboard
