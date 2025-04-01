@@ -8,6 +8,9 @@ from boxing.models.boxers_model import Boxer
 from boxing.models.boxers_model import update_boxer_stats
 from boxing.utils.api_utils import get_random
 
+# Configure test logger
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 # ------------------
 # FIXTURES
@@ -48,12 +51,14 @@ def sample_boxer_4():
 
 def test_enter_ring_adds_first_boxer(ring_model, sample_boxer_1):
     """Test that adds a boxer into the ring"""
+    logger.info("Testing enter_ring with one boxer")
     ring_model.enter_ring(sample_boxer_1)
     assert len(ring_model.ring) == 1
     assert ring_model.ring[0].name == "Ali"
 
 def test_enter_ring_adds_second_boxer(ring_model, sample_boxer_1, sample_boxer_2):
     """Test that adds two boxers into the ring"""
+    logger.info("Testing enter_ring with two boxers")
     ring_model.enter_ring(sample_boxer_1)
     ring_model.enter_ring(sample_boxer_2)
     assert len(ring_model.ring) == 2
@@ -61,11 +66,13 @@ def test_enter_ring_adds_second_boxer(ring_model, sample_boxer_1, sample_boxer_2
 
 def test_enter_ring_not_boxer(ring_model):
     """Test that an exception is raised when trying to add a non-Boxer object."""
+    logger.info("Testing enter_ring with a non-Boxer object")
     with pytest.raises(Exception):
         ring_model.enter_ring("not_a_boxer")
 
 def test_enter_ring_raises_error_when_full(ring_model, sample_boxer_1, sample_boxer_2):
     """Test that a ValueError is raised when trying to add more than 2 boxers."""
+    logger.info("Testing enter_ring with more than 2 boxers")
     ring_model.enter_ring(sample_boxer_1)
     ring_model.enter_ring(sample_boxer_2)
     with pytest.raises(ValueError, match="Ring is full, cannot add more boxers."):
@@ -78,6 +85,7 @@ def test_enter_ring_raises_error_when_full(ring_model, sample_boxer_1, sample_bo
 
 def test_fight_return_winner(ring_model, sample_boxer_1, sample_boxer_2, mock_update_boxer_stats):
     """Test that calls the fight method and returns a valid winner."""
+    logger.info("Testing fight method to return a valid winner")
     ring_model.enter_ring(sample_boxer_1)
     ring_model.enter_ring(sample_boxer_2)
     winner = ring_model.fight()
@@ -87,6 +95,7 @@ def test_fight_return_winner(ring_model, sample_boxer_1, sample_boxer_2, mock_up
 
 def test_not_enough_boxers_raises_error(ring_model, sample_boxer_1):
     """Test that a ValueError is raised when trying to fight with less than 2 boxers."""
+    logger.info("Testing fight method with less than 2 boxers to check for error raise")
     ring_model.enter_ring(sample_boxer_1)
     with pytest.raises(ValueError, match="There must be two boxers to start a fight."):
         ring_model.fight()
@@ -95,6 +104,7 @@ def test_not_enough_boxers_raises_error(ring_model, sample_boxer_1):
 def test_fight_return_winner_example(ring_model, sample_boxer_1, sample_boxer_2, mocker, mock_update_boxer_stats):
     """Test that confirms that the correct winner is returned after calling fight 
     with a mocked random number generator."""
+    logger.info("Testing fight method to return a valid winner with mocked number")
     mocker.patch("boxing.models.ring_model.get_random", return_value=0.01)
 
     ring_model.enter_ring(sample_boxer_1)
@@ -110,6 +120,7 @@ def test_fight_return_winner_example(ring_model, sample_boxer_1, sample_boxer_2,
 def test_two_consecutive_fights(ring_model, sample_boxer_1, sample_boxer_2, mock_update_boxer_stats):
     """Tests that two consecutive fights can occur back to back and that the ring
     resets properly"""
+    logger.info("Testing two consecutive fights and whether the ring resets properly")
     ring_model.enter_ring(sample_boxer_1)
     ring_model.enter_ring(sample_boxer_2)
     winner1 = ring_model.fight()
@@ -131,6 +142,7 @@ def test_two_consecutive_fights(ring_model, sample_boxer_1, sample_boxer_2, mock
 # ------------------
 
 def test_clear_ring(ring_model, sample_boxer_1, sample_boxer_2):
+    logger.info("Testing clear_ring method")
     """Test whether the ring can be cleared"""
     ring_model.enter_ring(sample_boxer_1)
     ring_model.enter_ring(sample_boxer_2)
@@ -139,6 +151,7 @@ def test_clear_ring(ring_model, sample_boxer_1, sample_boxer_2):
 
 def test_clear_rings_after_fight(ring_model , sample_boxer_1, sample_boxer_2, mock_update_boxer_stats):
     """Test that the ring is cleared after a fight"""
+    logger.info("Testing if ring clears automatically after a figth")
     ring_model.enter_ring(sample_boxer_1)
     ring_model.enter_ring(sample_boxer_2)
     ring_model.fight()
@@ -146,6 +159,7 @@ def test_clear_rings_after_fight(ring_model , sample_boxer_1, sample_boxer_2, mo
 
 def test_clear_ring_when_empty(ring_model):
     """Tests that clearing an empty ring does not raise an error"""
+    logger.info("Testing clear_ring method with an empty ring")
     ring_model.clear_ring()
     assert ring_model.get_boxers() == []
 
@@ -155,6 +169,7 @@ def test_clear_ring_when_empty(ring_model):
 
 def test_get_boxers(ring_model , sample_boxer_1, sample_boxer_2):
     """Test that get_boxers returns the boxers in the ring"""
+    logger.info("Testing get_boxers method")
     ring_model.enter_ring(sample_boxer_1)
     ring_model.enter_ring(sample_boxer_2)
     boxers = ring_model.get_boxers()
@@ -166,11 +181,13 @@ def test_get_boxers(ring_model , sample_boxer_1, sample_boxer_2):
 
 def test_get_fighter_skill(ring_model, sample_boxer_1):
     """Test that get_fighter_skill returns a float"""
+    logger.info("Testing whether the fighters skill returns as a float")
     skill = ring_model.get_fighting_skill(sample_boxer_1)
     assert isinstance(skill, float)
 
 def test_get_fighter_skill_expected(ring_model, sample_boxer_1):
     """Test that get_fighter_skill returns the expected value"""
+    logger.info("Testing whether the fighters skill returns the expected value")
     expected_skill = (150 * len("Ali")) + (72.5 / 10) + 0  # age_modifier is 0
     skill = ring_model.get_fighting_skill(sample_boxer_1)
     assert skill == expected_skill
