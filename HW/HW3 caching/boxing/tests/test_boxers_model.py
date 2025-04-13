@@ -30,12 +30,12 @@ def sample_boxers(sample_boxer1, sample_boxer2):
 
 # --- Ring Clear ---
 
-# def test_clear_ring(ring_model):
-#     """Test that clear_ring empties the ring."""
-#     ring_model.ring = [1, 2]
-#     ring_model.clear_ring()
-#     assert len(ring_model.ring) == 0
-def test_clear_ring(): return True
+def test_clear_ring(ring_model):
+    """Test that clear_ring empties the ring."""
+    ring_model.ring = [1, 2]
+    ring_model.clear_ring()
+    assert len(ring_model.ring) == 0
+
 
 # def test_clear_ring_empty(ring_model, caplog):
 #     """Test that clear_ring logs a warning when already empty."""
