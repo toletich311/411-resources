@@ -135,21 +135,29 @@ class RingModel:
             List[Boxers]: A list of Boxers dataclass instances representing the boxers in the ring.
 
         """
+        results = []
         if not self.ring:
             logger.warning("Retrieving boxers from an empty ring.")
         else:
             logger.info(f"Retrieving {len(self.ring)} boxers from the ring.")
 
         for boxer_id in self.ring:
-            if expired:
+            if boxer_id not in self._ttl or time.time() > self._ttl[boxer_id]:
                 logger.info(f"TTL expired or missing for boxer {boxer_id}. Refreshing from DB.")
+                try:
+                    boxer = Boxers.get_boxer_by_id(boxer_id)
+                    results.append(boxer)
+                except ValueError:
+                    logger.warning(f"Boxer ID {boxer_id} not found in DB. Skipping.")
+                    continue
             else:
+                boxer = self._boxer_cache.get(boxer_id)
+                results.append(boxer)
                 logger.debug(f"Using cached boxer {boxer_id} (TTL valid).")
 
         logger.info(f"Retrieved {len(self.ring)} boxers from the ring.")
-        logger.info(f"retrieved {self.ring}.")
 
-        return self.ring 
+        return results 
 
     def get_fighting_skill(self, boxer: Boxers) -> float:
         """Calculates the fighting skill for a boxer based on arbitrary rules.
