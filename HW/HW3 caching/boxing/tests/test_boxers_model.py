@@ -60,15 +60,15 @@ def test_get_boxers_with_data(app, ring_model, sample_boxers):
      assert boxers == sample_boxers
 
 
-# def test_get_boxers_uses_cache(ring_model, sample_boxer1, mocker):
-#     ring_model.ring.append(sample_boxer1.id)
-#     ring_model._boxer_cache[sample_boxer1.id] = sample_boxer1
-#     ring_model._ttl[sample_boxer1.id] = time.time() + 100
-#     mock_get = mocker.patch("boxing.models.ring_model.Boxers.get_boxer_by_id")
-#     boxers = ring_model.get_boxers()
-#     assert boxers[0] == sample_boxer1
-#     mock_get.assert_not_called()
-def test_get_boxers_uses_cache(): return True
+def test_get_boxers_uses_cache(ring_model, sample_boxer1, mocker):
+    ring_model.ring.append(sample_boxer1.id)
+    ring_model._boxer_cache[sample_boxer1.id] = sample_boxer1
+    ring_model._ttl[sample_boxer1.id] = time.time() + 100
+    mock_get = mocker.patch("boxing.models.ring_model.Boxers.get_boxer_by_id")
+    boxers = ring_model.get_boxers()
+    assert boxers[0] == sample_boxer1
+    mock_get.assert_not_called()
+
 
 # def test_get_boxers_refreshes_on_expired_ttl(ring_model, sample_boxer1, mocker):
 #     ring_model.ring.append(sample_boxer1.id)
