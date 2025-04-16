@@ -158,9 +158,18 @@ class Boxers(db.Model):
             ValueError: If the boxer with the given ID does not exist.
 
         """
-        if boxer is None:
-            logger.info(f"Boxer with ID {boxer_id} not found.")
-        pass
+        try:
+            boxer = cls.query.get(boxer_id)
+            if not boxer:
+                logger.info(f"Boxer with ID {boxer_id} not found")
+                raise ValueError(f"Boxer with ID {boxer_id} not found")
+
+            logger.info(f"Successfully retrieved Boxer: {boxer.name} - {boxer.age} ({boxer.weight})")
+            return boxer
+
+        '''except SQLAlchemyError as e:
+            logger.error(f"Database error while retrieving song by ID {song_id}: {e}")
+            raise'''
 
     @classmethod
     def get_boxer_by_name(cls, name: str) -> "Boxers":
