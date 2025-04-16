@@ -1,7 +1,7 @@
 import logging
 from typing import List
 
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from boxing.db import db
 from boxing.utils.logger import configure_logger
@@ -139,10 +139,10 @@ class Boxers(db.Model):
             db.session.rollback()
             raise ValueError(f"Boxer with name '{name}', age '{age}', and weight {weight} already exists.")
 
-        '''except SQLAlchemyError as e:
-            logger.error(f"Database error while creating song: {e}")
+        except SQLAlchemyError as e:
+            logger.error(f"Database error while creating boxer: {e}")
             db.session.rollback()
-            raise'''
+            raise
 
     @classmethod
     def get_boxer_by_id(cls, boxer_id: int) -> "Boxers":
@@ -166,10 +166,9 @@ class Boxers(db.Model):
 
             logger.info(f"Successfully retrieved Boxer: {boxer.name} - {boxer.age} ({boxer.weight})")
             return boxer
-
-        '''except SQLAlchemyError as e:
-            logger.error(f"Database error while retrieving song by ID {song_id}: {e}")
-            raise'''
+        except SQLAlchemyError as e:
+            logger.error(f"Database error while retrieving boxer by ID {boxer_id}: {e}")
+            raise
 
     @classmethod
     def get_boxer_by_name(cls, name: str) -> "Boxers":
