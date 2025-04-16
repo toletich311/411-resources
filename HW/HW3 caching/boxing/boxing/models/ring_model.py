@@ -147,6 +147,7 @@ class RingModel:
                 logger.debug(f"Using cached boxer {boxer_id} (TTL valid).")
 
         logger.info(f"Retrieved {len(self.ring)} boxers from the ring.")
+        logger.info(f"retrieved {self.ring}.")
 
         return self.ring 
 

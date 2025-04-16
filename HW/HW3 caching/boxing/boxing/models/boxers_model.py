@@ -27,7 +27,7 @@ class Boxers(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String, nullable=False)
     weight= db.Column(db.Float, nullable=False) 
-    x= db.Column(db.Float, nullable=False) 
+    height= db.Column(db.Float, nullable=False) 
     reach = db.Column(db.Float, nullable=False) 
     age = db.Column(db.Integer, nullable=False)
     weight_class= db.Column(db.String, nullable=False)
@@ -52,6 +52,7 @@ class Boxers(db.Model):
         self.height=height
         self.reach=reach
         self.age =age
+        self.weight_class = self.get_weight_class(weight)
        
         pass
 
