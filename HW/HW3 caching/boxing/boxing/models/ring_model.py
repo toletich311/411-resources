@@ -116,6 +116,7 @@ class RingModel:
         """
         if len(self.ring) >= 2:
             logger.error(f"Attempted to add boxer ID {boxer_id} but the ring is full")
+            raise ValueError("Ring is full") 
 
         try:
             boxer = Boxers.get_boxer_by_id(boxer_id)
@@ -124,7 +125,7 @@ class RingModel:
             raise
 
         logger.info(f"Adding boxer '{boxer.name}' (ID {boxer_id}) to the ring")
-
+        self.ring.append(boxer_id)
         logger.info(f"Current boxers in the ring: {[Boxers.get_boxer_by_id(b).name for b in self.ring]}")
 
 
@@ -146,14 +147,17 @@ class RingModel:
                 logger.info(f"TTL expired or missing for boxer {boxer_id}. Refreshing from DB.")
                 try:
                     boxer = Boxers.get_boxer_by_id(boxer_id)
-                    results.append(boxer)
+                
                 except ValueError:
                     logger.warning(f"Boxer ID {boxer_id} not found in DB. Skipping.")
                     continue
+                self._boxer_cache[boxer_id] = boxer
+                self._ttl[boxer_id] = time.time() + self.ttl_seconds 
             else:
                 boxer = self._boxer_cache.get(boxer_id)
-                results.append(boxer)
+            
                 logger.debug(f"Using cached boxer {boxer_id} (TTL valid).")
+            results.append(boxer)
 
         logger.info(f"Retrieved {len(self.ring)} boxers from the ring.")
 
