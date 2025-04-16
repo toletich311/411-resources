@@ -184,9 +184,17 @@ class Boxers(db.Model):
             ValueError: If the boxer with the given name does not exist.
 
         """
-        if boxer is None:
-            logger.info(f"Boxer '{name}' not found.")
-        pass
+        try:
+            boxer = cls.query.get(boxer.name)
+            if not boxer:
+                logger.info(f"Boxer with ID {boxer.name} not found")
+                raise ValueError(f"Boxer with ID {boxer.name} not found")
+
+            logger.info(f"Successfully retrieved Boxer: {boxer.name} - {boxer.age} ({boxer.weight})")
+            return boxer
+        except SQLAlchemyError as e:
+            logger.error(f"Database error while retrieving boxer by ID {boxer.name}: {e}")
+            raise
 
     @classmethod
     def delete(cls, boxer_id: int) -> None:
