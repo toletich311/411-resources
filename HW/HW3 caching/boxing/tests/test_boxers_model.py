@@ -37,13 +37,13 @@ def test_clear_ring(ring_model):
     assert len(ring_model.ring) == 0
 
 
-# def test_clear_ring_empty(ring_model, caplog):
-#     """Test that clear_ring logs a warning when already empty."""
-#     with caplog.at_level("WARNING"):
-#         ring_model.clear_ring()
-#     assert len(ring_model.ring) == 0
-#     assert "Attempted to clear an empty ring." in caplog.text
-def test_clear_ring_empty(): return True
+def test_clear_ring_empty(ring_model, caplog):
+    """Test that clear_ring logs a warning when already empty."""
+    with caplog.at_level("WARNING"):
+         ring_model.clear_ring()
+    assert len(ring_model.ring) == 0
+    assert "Attempted to clear an empty ring." in caplog.text
+
 
 # def test_get_boxers_empty(ring_model, caplog):
 #     """Test get_boxers logs when empty."""
