@@ -53,8 +53,6 @@ class Boxers(db.Model):
         self.reach=reach
         self.age =age
         self.weight_class = self.get_weight_class(weight)
-       
-        pass
 
     @classmethod
     def get_weight_class(cls, weight: float) -> str:
