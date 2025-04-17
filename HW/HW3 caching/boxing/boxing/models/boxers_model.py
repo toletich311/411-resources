@@ -158,7 +158,7 @@ class Boxers(db.Model):
 
         """
         try:
-            boxer = cls.query.get(boxer_id)
+            boxer = db.session.get(cls, boxer_id)
             if not boxer:
                 logger.info(f"Boxer with ID {boxer_id} not found")
                 raise ValueError(f"Boxer with ID {boxer_id} not found")
@@ -184,7 +184,7 @@ class Boxers(db.Model):
 
         """
         try:
-            boxer = cls.query.get(boxer.name)
+            boxer = db.session.query(cls).filter_by(name=name.strip()).first()
             if not boxer:
                 logger.info(f"Boxer with ID {boxer.name} not found")
                 raise ValueError(f"Boxer with ID {boxer.name} not found")
