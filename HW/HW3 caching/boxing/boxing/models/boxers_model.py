@@ -107,7 +107,7 @@ class Boxers(db.Model):
         """
         logger.info(f"Creating boxer: {name}, {weight=} {height=} {reach=} {age=}")
 
-        logger.info(f"Received request to create song: {artist} - {title} ({year})")
+        logger.info(f"Received request to create song: {name} - {weight} ({age})")
 
         try:
             boxer = Boxers(
